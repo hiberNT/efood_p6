@@ -1,14 +1,16 @@
 import styled from 'styled-components'
 import { cores } from '../../styles'
 import { TagContainer } from '../Tag/styles'
+import { Link } from 'react-router-dom'
 
-export const Card = styled.div`
+export const Card = styled(Link)`
   background-color: #ffffff;
   width: 472px;
   border: 1px solid ${cores.vermelho};
   padding: 8px;
-  margin-top: -5px;
+  margin-top: 38px;
   position: relative;
+  text-decoration: none;
 
   ${TagContainer} {
     margin-right: 8px;
@@ -21,7 +23,9 @@ export const ImagemContainer = styled.div`
   justify-content: center;
 
   img {
-    margin-top: -16px;
+    width: 472px;
+    height: 217px;
+    margin-top: -15px;
   }
 `
 

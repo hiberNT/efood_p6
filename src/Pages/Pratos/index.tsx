@@ -1,10 +1,9 @@
+import { useEffect, useState } from 'react'
 import Footer from '../../Footer'
 import ListaPizza from '../../components/ListaPizza'
 import Fundo from '../../assets/images/fundo.png'
 import logo from '../../assets/images/logo.png'
 import Prato from '../../assets/images/macarrao.png'
-import PratosComida from '../../models/PratosComidas'
-import pizza from '../../assets/images/pizza.png'
 
 import {
   HeaderPratos,
@@ -15,73 +14,40 @@ import {
   HeaderPratos2,
   Container2
 } from './styles'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { Restaurante } from '../Home'
 
-const ITENS: PratosComida[] = [
-  {
-    id: 1,
-    title: 'Pizza Marguerita',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida,manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: pizza
-  },
-  {
-    id: 2,
-    title: 'Pizza Marguerita',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida,manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: pizza
-  },
-  {
-    id: 3,
-    title: 'Pizza Marguerita',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida,manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: pizza
-  },
-  {
-    id: 4,
-    title: 'Pizza Marguerita',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida,manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: pizza
-  },
-  {
-    id: 5,
-    title: 'Pizza Marguerita',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida,manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: pizza
-  },
-  {
-    id: 6,
-    title: 'Pizza Marguerita',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida,manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: pizza
-  }
-]
+const Pratos = () => {
+  const [prato, setPrato] = useState<Restaurante>()
+  const { id } = useParams()
 
-const Pratos = () => (
-  <>
-    <HeaderPratos style={{ backgroundImage: `url(${Fundo})` }}>
-      <Container>
-        <Restaurantes to="/">Restaurantes</Restaurantes>
-        <Link to="/">
-          <LogoPratos src={logo} alt="logo efood"></LogoPratos>
-        </Link>
-        <Carrinho>0 Produto(s) no carrinho</Carrinho>
-      </Container>
-    </HeaderPratos>
-    <HeaderPratos2 style={{ backgroundImage: `url(${Prato})` }}>
-      <Container2>
-        <h2>Italiana</h2>
-        <h1>La Dolce Vita Trattoria</h1>
-      </Container2>
-    </HeaderPratos2>
-    <ListaPizza plates={ITENS} />
-    <Footer />
-  </>
-)
+  useEffect(() => {
+    fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
+      .then((res) => res.json())
+      .then((res) => setPrato(res))
+  }, [id])
+
+  return (
+    <>
+      <HeaderPratos style={{ backgroundImage: `url(${Fundo})` }}>
+        <Container>
+          <Restaurantes to="/">Restaurantes</Restaurantes>
+          <Link to="/">
+            <LogoPratos src={logo} alt="logo efood" />
+          </Link>
+          <Carrinho>0 Produto(s) no carrinho</Carrinho>
+        </Container>
+      </HeaderPratos>
+      <HeaderPratos2 style={{ backgroundImage: `url(${Prato})` }}>
+        <Container2>
+          <h2>{prato?.titulo}</h2>
+          <h1>{prato?.tipo}</h1>
+        </Container2>
+      </HeaderPratos2>
+      {<ListaPizza {} />}
+      <Footer />
+    </>
+  )
+}
 
 export default Pratos
